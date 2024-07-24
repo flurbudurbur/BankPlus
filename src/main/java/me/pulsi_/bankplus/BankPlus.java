@@ -7,6 +7,7 @@ import me.pulsi_.bankplus.managers.BPAFK;
 import me.pulsi_.bankplus.managers.BPConfigs;
 import me.pulsi_.bankplus.managers.BPData;
 import me.pulsi_.bankplus.mySQL.BPSQL;
+import me.pulsi_.bankplus.placeholders.BPPlaceholderUtil;
 import me.pulsi_.bankplus.placeholders.BPPlaceholders;
 import me.pulsi_.bankplus.utils.BPLogger;
 import me.pulsi_.bankplus.utils.BPVersions;
@@ -112,6 +113,10 @@ public final class BankPlus extends JavaPlugin {
             bpPlaceholders.registerPlaceholders();
             bpPlaceholders.register();
             isPlaceholderApiHooked = true;
+        } else {
+            BPLogger.info("Using native placeholders!");
+
+            BPPlaceholderUtil.registerPlaceholders();
         }
         if (plManager.getPlugin("Essentials") != null) {
             BPLogger.info("Hooked into Essentials!");

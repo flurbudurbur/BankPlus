@@ -1,5 +1,6 @@
 package me.pulsi_.bankplus.placeholders;
 
+import me.pulsi_.bankplus.placeholders.list.*;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class BPPlaceholderUtil {
+
     public static List<BPPlaceholder> registerVariations(List<BPPlaceholder> placeholders) {
         List<BPPlaceholder> registeredPlaceholders = new ArrayList<>();
         for (BPPlaceholder placeholder : placeholders) {
@@ -131,5 +133,58 @@ public class BPPlaceholderUtil {
             }
         }
         return reParts;
+    }
+
+    private static final List<BPPlaceholder> placeholders = new ArrayList<>();
+    public static void registerPlaceholders() {
+        placeholders.clear();
+
+        placeholders.add(new BalancePlaceholder());
+        placeholders.add(new BankTopPlaceholder());
+        placeholders.add(new BankTopPositionPlaceholder());
+        placeholders.add(new CapacityPlaceholder());
+        placeholders.add(new DebtPlaceholder());
+        placeholders.add(new TaxesPlaceholder());
+        placeholders.add(new InterestCooldownMillisPlaceholder());
+        placeholders.add(new InterestCooldownPlaceholder());
+        placeholders.add(new InterestRatePlaceholder());
+        placeholders.add(new LevelPlaceholder());
+        placeholders.add(new NextInterestPlaceholder());
+        placeholders.add(new NextLevelPlaceholder());
+        placeholders.add(new NextOfflineInterestPlaceholder());
+        placeholders.add(new OfflineInterestRatePlaceholder());
+        placeholders.add(new CalculatePercentagePlaceholder());
+        placeholders.add(new CalculateTaxesPlaceholder());
+        placeholders.add(new NamePlaceholder());
+        placeholders.add(new NextLevelCompoundPlaceholder());
+
+        List<BPPlaceholder> variablePlaceholders = BPPlaceholderUtil.registerVariations(placeholders);
+        placeholders.addAll(variablePlaceholders);
+
+        List<BPPlaceholder> orderedPlaceholders = new ArrayList<>(), copy = new ArrayList<>(placeholders);
+        while (!copy.isEmpty()) {
+            BPPlaceholder longest = null;
+
+            int highestLength = 0;
+            for (BPPlaceholder placeholder : copy) {
+                String identifier = placeholder.getIdentifier();
+                int length = identifier.length();
+
+                if (length > highestLength) {
+                    highestLength = length;
+                    longest = placeholder;
+                }
+            }
+
+            orderedPlaceholders.add(longest);
+            copy.remove(longest);
+        }
+
+        placeholders.clear();
+        placeholders.addAll(orderedPlaceholders);
+    }
+
+    public static List<String> getRegisteredPlaceholders() {
+        return new ArrayList<>(getRegisteredPlaceholderIdentifiers(placeholders));
     }
 }
