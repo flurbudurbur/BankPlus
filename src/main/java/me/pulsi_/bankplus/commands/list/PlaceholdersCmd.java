@@ -3,6 +3,7 @@ package me.pulsi_.bankplus.commands.list;
 import me.pulsi_.bankplus.BankPlus;
 import me.pulsi_.bankplus.bankSystem.BankUtils;
 import me.pulsi_.bankplus.commands.BPCommand;
+import me.pulsi_.bankplus.placeholders.BPPlaceholderUtil;
 import me.pulsi_.bankplus.utils.texts.BPArgs;
 import me.pulsi_.bankplus.utils.texts.BPMessages;
 import org.bukkit.command.CommandSender;
@@ -60,7 +61,7 @@ public class PlaceholdersCmd extends BPCommand {
 
     @Override
     public void onExecution(CommandSender s, String[] args) {
-        List<String> placeholders =  BankPlus.INSTANCE().getBpPlaceholders().getRegisteredPlaceholders();
+        List<String> placeholders =  BPPlaceholderUtil.getRegisteredPlaceholders();
         int size = placeholders.size();
 
         BPMessages.send(s, "%prefix% &7Currently registered placeholders &8(&a" + size + "&8)&7:", true);
