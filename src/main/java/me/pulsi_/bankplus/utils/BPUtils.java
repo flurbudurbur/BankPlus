@@ -17,6 +17,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -115,8 +116,9 @@ public class BPUtils {
 
     /**
      * Play a sound for that player.
+     *
      * @param soundString The sound string.
-     * @param p The player target.
+     * @param p           The player target.
      * @return Return true on successfully play.
      */
     public static boolean playSound(String soundString, Player p) {
@@ -279,14 +281,25 @@ public class BPUtils {
         Bukkit.getScheduler().runTask(BankPlus.INSTANCE(), () -> Bukkit.getPluginManager().callEvent(event));
     }
 
+    /**
+     * Return a string with all the required items using the following format:
+     * - "[itemAmount] [itemName], [itemAmount] [itemName] and [itemAmount] [itemName]"
+     *
+     * @param requiredItems A list of required items.
+     * @return A string of required items.
+     */
     public static String getRequiredItems(List<ItemStack> requiredItems) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < requiredItems.size(); i++) {
             ItemStack item = requiredItems.get(i);
             int amount = item.getAmount();
-            String material = (item.getType() + (amount > 1 ? "s" : "")).toLowerCase();
 
-            builder.append(amount).append(" ").append(material);
+            String name;
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null && meta.hasDisplayName()) name = meta.getDisplayName();
+            else name = item.getType().toString();
+
+            builder.append(amount).append(" ").append(name);
             if (i == requiredItems.size() - 1) continue;
             if (i + 1 == requiredItems.size() - 1) builder.append(" and ");
             else builder.append(", ");
@@ -294,6 +307,13 @@ public class BPUtils {
         return builder.toString();
     }
 
+    /**
+     * Check if the selected path in the config exist.
+     *
+     * @param config The config.
+     * @param path   The path.
+     * @return true if it exists.
+     */
     public static boolean pathExist(FileConfiguration config, String path) {
         return config != null && config.get(path) != null;
     }

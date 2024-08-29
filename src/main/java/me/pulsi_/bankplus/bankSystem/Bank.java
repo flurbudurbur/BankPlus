@@ -77,6 +77,7 @@ public class Bank {
 
     /**
      * Update the bank settings, such as access permission, levels and other.
+     *
      * @param file The bank file.
      */
     public void updateBankSettings(File file) {
